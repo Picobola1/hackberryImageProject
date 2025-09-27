@@ -1,8 +1,9 @@
 import cv2 as cv
 import numpy as np
 
+cap = cv.VideoCapture(0)
 pizza = cv.imread('pizza.jpg')
-img = cv.imread('1.jpg')
+img = cv.imread('6.jpg')
 
 
 ## show the image with edits
@@ -18,6 +19,9 @@ rect_around_face = haar_cascadeFaces.detectMultiScale(gray, scaleFactor=1.1, min
 
 print(f'Number Of Faces Found = {len(rect_around_face)}')
 
+while True:
+    _, img = cap.read(1)
+    cv.imshow('frame-1', img)
 
 
 for (x,y,w,h) in rect_around_face:
