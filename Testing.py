@@ -1,7 +1,18 @@
 import cv2 as cv
 import numpy as np
 
-img = cv.imread('5.jpg')
+pizza = cv.imread('pizza.jpg')
+img = cv.imread('1.jpg')
+
+def translatePizza(pizza, x,y):
+    transMat = np.float32([[1,0,x],[0,1,y]])
+    demensions = (img.shape[1], img.shape[0])
+    return cv.warpAffine(pizza, transMat,demensions)
+
+translated = translatePizza(pizza, 100, 100)
+
+cv.imshow('translated pizza', translated)
+cv.imshow('pizza', pizza)
 ## show the image with edits
 
 
@@ -17,8 +28,9 @@ print(f'Number Of Faces Found = {len(rect_around_face)}')
 
 
 for (x,y,w,h) in rect_around_face:
+   
     
-    cv.rectangle(img, (x,y), (x+w,y + h), (0,250,0), thickness=2)
+    cv.rectangle(img, (x,y), (x+w,y + h), (100,100,0), thickness=2)
 
 
 
