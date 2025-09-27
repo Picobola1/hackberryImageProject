@@ -18,20 +18,16 @@ rect_around_face = haar_cascadeFaces.detectMultiScale(gray, scaleFactor=1.1, min
 
 print(f'Number Of Faces Found = {len(rect_around_face)}')
 
-def translatePizza(pizza, x,y):
-    transMat = np.float32([[1,0,x],[0,1,y]])
-    demensions = (img.shape[1], img.shape[0])
-    return cv.warpAffine(pizza, transMat,demensions)
+
 
 for (x,y,w,h) in rect_around_face:
     cv.rectangle(img, (x,y), (x+w,y + h), (100,100,0), thickness=2)
 
     resize = cv.resize(pizza, (w,h))
-    translate = translatePizza(resize, x,y)
+    img[y:y+h, x:x+w] = resize
 
 
-cv.imshow('rezied pizza', translate)
-cv.imshow('pizza', pizza)
+
 
 
 cv.imshow('Detected Faces', img)
