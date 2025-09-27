@@ -5,6 +5,8 @@ img = cv.imread('1.jpg')
 ## show the image with edits
 cv.imshow('Me', img)
 
+gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+cv.imshow('GrayMe', gray)
 
 
 
