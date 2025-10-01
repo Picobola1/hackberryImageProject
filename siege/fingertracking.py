@@ -4,7 +4,7 @@ import mediapipe as mp
 import time
 
 cap = cv.VideoCapture(0)
-
+flappybird = cv.imread("siege/flappybird.png", cv.IMREAD_COLOR)
 mpHands = mp.solutions.hands 
 hands = mpHands.Hands()# defult parmeters
 
@@ -28,8 +28,13 @@ while True:
                 h, w, c = img.shape
                 cx, cy = int(lm.x*w), int(lm.y*h)
                 #print(id, cx, cy)
-                if id == 12:
-                    cv.circle(flipped_img, (cx,cy), 5, (255,255,255), cv.FILLED)
+                if id == 8:
+                    circleSize = 25
+                    #cv.circle(flipped_img, (cx,cy), circleSize, (255,0,255), cv.FILLED)
+                    
+                    resizeBird = cv.resize(flappybird, (circleSize,circleSize))
+                    flipped_img[cy:cy+circleSize, cx:cx+circleSize] = resizeBird
+                    
 
     cv.imshow(" Image", flipped_img)
     key = cv.waitKey(1) & 0xFF
