@@ -11,8 +11,8 @@ hands = mpHands.Hands()# defult parmeters
 # run a web cam and anything while web cam is still going
 while True:
     success, img = cap.read()
-
-    imgRgb = cv.cvtColor(img, cv.COLOR_BGR2RGB)
+    flipped_img = cv.flip(img, 1) # Flip horizontally
+    imgRgb = cv.cvtColor(flipped_img, cv.COLOR_BGR2RGB)
     results = hands.process(imgRgb)
     mpDraw = mp.solutions.drawing_utils
     #print(results.multi_hand_landmarks)
@@ -22,10 +22,16 @@ while True:
         for handLms in results.multi_hand_landmarks:
             #not drawing on rgb img cuz we are not displaying the img
             # draw land marks of single hand
-            mpDraw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
-            
+            mpDraw.draw_landmarks(flipped_img, handLms, mpHands.HAND_CONNECTIONS)
+            for id, lm in enumerate(handLms.landmark):
+                #print(id,lm)
+                h, w, c = img.shape
+                cx, cy = int(lm.x*w), int(lm.y*h)
+                #print(id, cx, cy)
+                if id == 12:
+                    cv.circle(flipped_img, (cx,cy), 5, (255,255,255), cv.FILLED)
 
-    cv.imshow("Image", img)
+    cv.imshow(" Image", flipped_img)
     key = cv.waitKey(1) & 0xFF
     if key == ord('q'):   # press q to quit
         break
