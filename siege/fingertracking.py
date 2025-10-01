@@ -29,11 +29,13 @@ while True:
                 cx, cy = int(lm.x*w), int(lm.y*h)
                 #print(id, cx, cy)
                 if id == 8:
-                    circleSize = 25
-                    #cv.circle(flipped_img, (cx,cy), circleSize, (255,0,255), cv.FILLED)
-                    
-                    resizeBird = cv.resize(flappybird, (circleSize,circleSize))
-                    flipped_img[cy:cy+circleSize, cx:cx+circleSize] = resizeBird
+                    BirdSize = 45
+                    #cv.circle(flipped_img, (cx,cy), BirdSize, (255,0,255), cv.FILLED)
+                    x1 = cx - BirdSize // 2
+                    y1 = cy - BirdSize // 2
+
+                    resizeBird = cv.resize(flappybird, (BirdSize,BirdSize))
+                    flipped_img[y1:y1+BirdSize, x1:x1+BirdSize] = resizeBird
                     
 
     cv.imshow(" Image", flipped_img)
