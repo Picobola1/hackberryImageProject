@@ -22,7 +22,7 @@ while True:
         for handLms in results.multi_hand_landmarks:
             #not drawing on rgb img cuz we are not displaying the img
             # draw land marks of single hand
-            mpDraw.draw_landmarks(img, handLms)
+            mpDraw.draw_landmarks(img, handLms, mpHands.HAND_CONNECTIONS)
             
 
     cv.imshow("Image", img)
