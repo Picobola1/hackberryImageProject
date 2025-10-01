@@ -22,7 +22,6 @@ while True:
     #detect a face and return rectangluar coordinates as a list
     rect_around_face = haar_cascadeFaces.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5)
 
-    print(f'Number Of Faces Found = {len(rect_around_face)}')
 
 
 
