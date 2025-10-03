@@ -31,19 +31,40 @@ while True:
     imgRgb = cv.cvtColor(flipped_img, cv.COLOR_BGR2RGB)
     results = hands.process(imgRgb)
     mpDraw = mp.solutions.drawing_utils
+    bird_rect = None  # reset each frame
+
     #print(results.multi_hand_landmarks)
     #check if anyhands are found
-   
     #get coin width and height
+    #x1, y1 is minumum and + birdsize is maxium so bottem and top corner
     
-    for (CoinRangeX, CoinRangeY) in coin:
+    def CollisionCheck(rect1,rect2):
+        x1_min,y1_min, x1_max, y1_max = rect1
+        x2_min,y2_min, x2_max, y2_max = rect2
+        
+        return not (x1_max < x2_min or  # rect1 is left of rect2
+            x1_min > x2_max or  # rect1 is right of rect2
+            y1_max < y2_min or  # rect1 is above rect2
+            y1_min > y2_max) 
+
+    # Always draw coins
+    for (CoinRangeX, CoinRangeY) in coin:   
+        coin_rect = (CoinRangeX, CoinRangeY, CoinRangeX + coinW, CoinRangeY + coinH)
         flipped_img[CoinRangeY:CoinRangeY+coinH, CoinRangeX:CoinRangeX+coinW] = resizeCoin
+    
+    # Check collision only if bird exists
+        if bird_rect is not None and CollisionCheck(bird_rect, coin_rect):
+            print("hehe")
+
+
+
+            
 
         
     #print(CoinRangeX,CoinRangeY)
-    
-    flipped_img[CoinRangeY:CoinRangeY + coinH, CoinRangeX:CoinRangeX + coinW] = resizeCoin
+
     if results.multi_hand_landmarks:
+        BirdSize = 45
         #get info from each hand/ loops thru each hand
         for handLms in results.multi_hand_landmarks:
             #not drawing on rgb img cuz we are not displaying the img
@@ -53,13 +74,21 @@ while True:
                 #print(id,lm)
                 h, w, c = img.shape
                 cx, cy = int(lm.x*w), int(lm.y*h)
+                x1 = cx - BirdSize // 2
+                y1 = cy - BirdSize // 2
+                bird_rect = (x1, y1, x1 + BirdSize, y1 + BirdSize)
                 #print(id, cx, cy)
                 if id == 8:
-                    BirdSize = 45
+                   
                     #cv.circle(flipped_img, (cx,cy), BirdSize, (255,0,255), cv.FILLED)
                     x1 = cx - BirdSize // 2
                     y1 = cy - BirdSize // 2
 
+                    
+                    
+
+                    
+                    
                     resizeBird = cv.resize(flappybird, (BirdSize,BirdSize))
                     flipped_img[y1:y1+BirdSize, x1:x1+BirdSize] = resizeBird
           
