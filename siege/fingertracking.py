@@ -5,6 +5,7 @@ import random
 
 
 cap = cv.VideoCapture(0)
+points = 0
 success, img = cap.read()
 window_h, window_w, c = img.shape
 flappybird = cv.imread("siege/flappybird.png", cv.IMREAD_COLOR)
@@ -18,8 +19,8 @@ coinH, coinW = resizeCoin.shape[:2]
 
 coin = []
 for i in range(5):
-    CoinRangeX = random.randint(0,window_w - CoinSpawingSquareSize - 50) 
-    CoinRangeY = random.randint(0,window_h - CoinSpawingSquareSize - 15)
+    CoinRangeX = random.randint(0,window_w - CoinSpawingSquareSize - 100) 
+    CoinRangeY = random.randint(0,window_h - CoinSpawingSquareSize - 100)
     coin.append((CoinRangeX,CoinRangeY))
 # run a web cam and anything while web cam is still going
 while True:
@@ -52,13 +53,6 @@ while True:
         coin_rect = (CoinRangeX, CoinRangeY, CoinRangeX + coinW, CoinRangeY + coinH)
         flipped_img[CoinRangeY:CoinRangeY+coinH, CoinRangeX:CoinRangeX+coinW] = resizeCoin
     
-    # Check collision only if bird exists
-        if bird_rect is not None and CollisionCheck(bird_rect, coin_rect):
-            print("hehe")
-
-
-
-            
 
         
     #print(CoinRangeX,CoinRangeY)
@@ -76,21 +70,23 @@ while True:
                 cx, cy = int(lm.x*w), int(lm.y*h)
                 x1 = cx - BirdSize // 2
                 y1 = cy - BirdSize // 2
-                bird_rect = (x1, y1, x1 + BirdSize, y1 + BirdSize)
+                
                 #print(id, cx, cy)
                 if id == 8:
-                   
+                    bird_rect = (x1, y1, x1 + BirdSize, y1 + BirdSize)
                     #cv.circle(flipped_img, (cx,cy), BirdSize, (255,0,255), cv.FILLED)
                     x1 = cx - BirdSize // 2
                     y1 = cy - BirdSize // 2
 
                     
-                    
-
-                    
-                    
                     resizeBird = cv.resize(flappybird, (BirdSize,BirdSize))
                     flipped_img[y1:y1+BirdSize, x1:x1+BirdSize] = resizeBird
+
+                    for (CoinRangeX, CoinRangeY) in coin:
+                        coin_rect = (CoinRangeX, CoinRangeY, CoinRangeX + coinW, CoinRangeY + coinH)
+                        if CollisionCheck(bird_rect, coin_rect):
+                            points +=1
+                            print("hehe" + str(points))
           
 
     cv.imshow(" Image", flipped_img)
