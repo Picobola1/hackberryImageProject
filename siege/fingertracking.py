@@ -33,7 +33,7 @@ while True:
     results = hands.process(imgRgb)
     mpDraw = mp.solutions.drawing_utils
     bird_rect = None  # reset each frame
-
+    cv.putText(flipped_img,str(points), (10,70), cv.FONT_HERSHEY_PLAIN, 2, (0,255,255), 2)
     #print(results.multi_hand_landmarks)
     #check if anyhands are found
     #get coin width and height
@@ -87,6 +87,7 @@ while True:
                         if CollisionCheck(bird_rect, coin_rect):
                             points +=1
                             print("hehe" + str(points))
+                           
           
 
     cv.imshow(" Image", flipped_img)
